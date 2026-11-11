@@ -1,0 +1,49 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard | CRM Pro{% endblock %}
+
+{% block content %}
+<section class="welcome-section">
+    <div>
+        <span class="section-label">VISÃO GERAL</span>
+        <h1>Olá, {{ request.user.first_name|default:request.user.username }}!</h1>
+        <p>Acompanhe o desempenho comercial da sua equipe.</p>
+    </div>
+</section>
+
+<section class="metrics-grid">
+    <article class="metric-card">
+        <span class="metric-label">Total de leads</span>
+        <strong>0</strong>
+        <small>Leads cadastrados</small>
+    </article>
+
+    <article class="metric-card">
+        <span class="metric-label">Clientes</span>
+        <strong>0</strong>
+        <small>Clientes cadastrados</small>
+    </article>
+
+    <article class="metric-card">
+        <span class="metric-label">Oportunidades</span>
+        <strong>0</strong>
+        <small>Negociações em andamento</small>
+    </article>
+
+    <article class="metric-card">
+        <span class="metric-label">Vendas</span>
+        <strong>R$ 0,00</strong>
+        <small>Valor total de vendas</small>
+    </article>
+</section>
+
+<section class="dashboard-panel">
+    <h2>Bem-vindo ao CRM Pro</h2>
+    <p>
+        Seu ambiente de gestão comercial está pronto.
+        Em breve, você poderá acompanhar leads, clientes,
+        oportunidades e resultados em um só lugar.
+    </p>
+</section>
+{% endblock %}

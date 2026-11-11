@@ -1,0 +1,84 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}CRM Pro{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+
+<div class="app-container">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">C</div>
+            <span>CRM<strong>Pro</strong></span>
+        </div>
+
+        <div class="menu-label">MENU PRINCIPAL</div>
+
+        <nav class="navigation">
+            <a href="{% url 'dashboard:home' %}" class="nav-link active">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="#" class="nav-link">
+                <span>♙</span> Leads
+            </a>
+
+            <a href="#" class="nav-link">
+                <span>♧</span> Clientes
+            </a>
+
+            <a href="#" class="nav-link">
+                <span>◇</span> Oportunidades
+            </a>
+
+            <a href="#" class="nav-link">
+                <span>◷</span> Atividades
+            </a>
+
+            <a href="#" class="nav-link">
+                <span>▤</span> Relatórios
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-avatar">
+                {{ request.user.first_name|first|default:request.user.username|first|upper }}
+            </div>
+
+            <div class="user-info">
+                <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+                <small>{{ request.user.get_role_display }}</small>
+            </div>
+
+            <form method="post" action="{% url 'accounts:logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-button" title="Encerrar sessão">
+                    ↗
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <span>CRM Pro / {% block breadcrumb %}Dashboard{% endblock %}</span>
+            <span class="topbar-user">{{ request.user.get_full_name|default:request.user.username }}</span>
+        </header>
+
+        <div class="page-content">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+</div>
+
+</body>
+</html>
