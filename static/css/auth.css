@@ -1,0 +1,382 @@
+
+/* =====================================================
+   CRM PRO - AUTHENTICATION
+   ===================================================== */
+
+:root {
+    --background: #f4f6fa;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --navy: #101b35;
+    --navy-light: #1a2948;
+    --text: #172033;
+    --muted: #778198;
+    --border: #e2e7ef;
+    --white: #ffffff;
+    --danger: #dc2626;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+.login-container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* BRAND PANEL */
+
+.login-brand {
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(37, 99, 235, 0.24),
+            transparent 35%
+        ),
+        linear-gradient(
+            145deg,
+            var(--navy),
+            #0b1428
+        );
+
+    color: var(--white);
+    padding: 55px 65px;
+    display: flex;
+    align-items: center;
+}
+
+.brand-content {
+    width: 100%;
+    max-width: 540px;
+    margin: auto;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.logo-icon {
+    width: 42px;
+    height: 42px;
+    background: var(--primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    color: var(--white);
+}
+
+.logo-highlight {
+    color: #60a5fa;
+}
+
+.brand-message {
+    margin-top: 130px;
+}
+
+.brand-tag {
+    color: #60a5fa;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.brand-message h1 {
+    font-size: clamp(35px, 4vw, 51px);
+    line-height: 1.2;
+    margin: 24px 0;
+    letter-spacing: -1.8px;
+}
+
+.brand-message h1 span {
+    color: #60a5fa;
+    display: block;
+}
+
+.brand-message p {
+    color: #aab7ce;
+    font-size: 16px;
+    line-height: 1.8;
+    max-width: 420px;
+}
+
+.brand-footer {
+    margin-top: 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: #8b9ab5;
+    font-size: 12px;
+}
+
+.brand-footer span {
+    color: #687995;
+}
+
+/* LOGIN PANEL */
+
+.login-form-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+}
+
+.mobile-logo {
+    display: none;
+}
+
+.login-heading {
+    margin-bottom: 38px;
+}
+
+.welcome-label {
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.login-heading h2 {
+    font-size: 32px;
+    letter-spacing: -1px;
+    margin-top: 14px;
+}
+
+.login-heading p {
+    color: var(--muted);
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+/* FORM */
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.form-input {
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    outline: none;
+    background: var(--white);
+    font-size: 14px;
+    color: var(--text);
+    transition: 0.2s ease;
+}
+
+.form-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+.form-input::placeholder {
+    color: #aab2c0;
+}
+
+.login-button {
+    width: 100%;
+    height: 53px;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.login-button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.login-button span {
+    font-size: 20px;
+}
+
+/* ERRORS */
+
+.error-message {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: var(--danger);
+    padding: 13px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.field-error {
+    color: var(--danger);
+    font-size: 12px;
+}
+
+/* SECURITY */
+
+.login-security {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 35px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.security-icon {
+    color: #16a34a;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+
+    .login-brand {
+        display: none;
+    }
+
+    .login-form-section {
+        min-height: 100vh;
+        padding: 30px 22px;
+    }
+
+    .mobile-logo {
+        display: block;
+        margin-bottom: 65px;
+    }
+
+    .login-card {
+        max-width: 440px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .login-heading h2 {
+        font-size: 27px;
+    }
+
+    .login-form-section {
+        padding: 24px;
+    }
+
+}
+
+
+/* =====================================================
+   HOME TEMPORÁRIA DO CRM
+   ===================================================== */
+
+.home-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background: var(--background);
+}
+
+.home-card {
+    width: 100%;
+    max-width: 650px;
+    padding: 45px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 15px 45px rgba(16, 27, 53, 0.06);
+}
+
+.home-content {
+    margin-top: 55px;
+}
+
+.home-content h1 {
+    font-size: 32px;
+    margin: 15px 0;
+}
+
+.home-content p {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.user-information {
+    display: grid;
+    gap: 18px;
+    margin: 35px 0;
+}
+
+.user-information div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+}
+
+.user-information span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.user-information strong {
+    font-size: 14px;
+}
+
+.home-content form {
+    margin-top: 25px;
+}
+
+@media (max-width: 480px) {
+    .home-card {
+        padding: 25px;
+    }
+}

@@ -1,0 +1,149 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | CRM Pro</title>
+
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <section class="login-brand">
+
+            <div class="brand-content">
+
+                <div class="brand-logo">
+                    <span class="logo-icon">C</span>
+                    <span>CRM<span class="logo-highlight">Pro</span></span>
+                </div>
+
+                <div class="brand-message">
+
+                    <span class="brand-tag">
+                        GESTÃO COMERCIAL INTELIGENTE
+                    </span>
+
+                    <h1>
+                        Seu relacionamento com clientes,
+                        <span>em outro nível.</span>
+                    </h1>
+
+                    <p>
+                        Gerencie oportunidades, acompanhe negociações
+                        e transforme relacionamentos em resultados.
+                    </p>
+
+                </div>
+
+                <div class="brand-footer">
+                    CRM Pro &copy; 2026
+                    <span>Gestão inteligente. Resultados reais.</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="login-form-section">
+
+            <div class="login-card">
+
+                <div class="mobile-logo">
+                    <div class="brand-logo">
+                        <span class="logo-icon">C</span>
+                        <span>CRM<span class="logo-highlight">Pro</span></span>
+                    </div>
+                </div>
+
+                <div class="login-heading">
+                    <span class="welcome-label">BEM-VINDO DE VOLTA</span>
+
+                    <h2>Acesse sua conta</h2>
+
+                    <p>
+                        Informe suas credenciais para continuar.
+                    </p>
+                </div>
+
+
+                <form method="POST" class="login-form">
+
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="error-message" role="alert">
+                            Usuário ou senha incorretos.
+                        </div>
+                    {% endif %}
+
+
+                    <div class="form-group">
+
+                        <label for="{{ form.username.id_for_label }}">
+                            Usuário
+                        </label>
+
+                        {{ form.username }}
+
+                        {% if form.username.errors %}
+                            <span class="field-error">
+                                {{ form.username.errors.0 }}
+                            </span>
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="{{ form.password.id_for_label }}">
+                            Senha
+                        </label>
+
+                        {{ form.password }}
+
+                        {% if form.password.errors %}
+                            <span class="field-error">
+                                {{ form.password.errors.0 }}
+                            </span>
+                        {% endif %}
+
+                    </div>
+
+
+                    <input
+                        type="hidden"
+                        name="next"
+                        value="{{ next|default:'' }}"
+                    >
+
+                    <button type="submit" class="login-button">
+                        Entrar na plataforma
+                        <span aria-hidden="true">→</span>
+                    </button>
+
+                </form>
+
+
+                <div class="login-security">
+                    <span class="security-icon">◆</span>
+                    Ambiente seguro e protegido
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
