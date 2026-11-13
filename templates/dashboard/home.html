@@ -3,47 +3,387 @@
 
 {% block title %}Dashboard | CRM Pro{% endblock %}
 
+{% block breadcrumb %}Dashboard{% endblock %}
+
 {% block content %}
+
+<!-- BOAS-VINDAS -->
 <section class="welcome-section">
     <div>
         <span class="section-label">VISÃO GERAL</span>
-        <h1>Olá, {{ request.user.first_name|default:request.user.username }}!</h1>
-        <p>Acompanhe o desempenho comercial da sua equipe.</p>
+
+        <h1>
+            Olá, {{ request.user.first_name|default:request.user.username }}!
+        </h1>
+
+        <p>
+            Acompanhe seu desempenho comercial e organize seus contatos.
+        </p>
     </div>
 </section>
 
+
+<!-- INDICADORES -->
 <section class="metrics-grid">
+
     <article class="metric-card">
         <span class="metric-label">Total de leads</span>
-        <strong>0</strong>
-        <small>Leads cadastrados</small>
+        <strong>{{ total_leads }}</strong>
+        <small>Leads que você pode visualizar</small>
     </article>
 
     <article class="metric-card">
-        <span class="metric-label">Clientes</span>
-        <strong>0</strong>
-        <small>Clientes cadastrados</small>
+        <span class="metric-label">Follow-ups atrasados</span>
+        <strong>{{ total_overdue }}</strong>
+        <small>Contatos que precisam de atenção</small>
     </article>
 
     <article class="metric-card">
-        <span class="metric-label">Oportunidades</span>
-        <strong>0</strong>
-        <small>Negociações em andamento</small>
+        <span class="metric-label">Contatos para hoje</span>
+        <strong>{{ total_today }}</strong>
+        <small>Acompanhamentos agendados</small>
     </article>
 
     <article class="metric-card">
-        <span class="metric-label">Vendas</span>
-        <strong>R$ 0,00</strong>
-        <small>Valor total de vendas</small>
+        <span class="metric-label">Próximos acompanhamentos</span>
+        <strong>{{ upcoming_followups|length }}</strong>
+        <small>Próximos cinco compromissos</small>
     </article>
+
 </section>
 
+
+<!-- GRÁFICOS -->
+<section class="dashboard-charts">
+
+    <!-- LEADS POR STATUS -->
+    <article class="dashboard-panel chart-panel">
+
+        <h2>Leads por status</h2>
+
+        <p>
+            Distribuição das etapas do funil comercial.
+        </p>
+
+        <div class="chart-container">
+            <canvas id="statusChart"></canvas>
+        </div>
+
+    </article>
+
+
+    <!-- LEADS POR ORIGEM -->
+    <article class="dashboard-panel chart-panel">
+
+        <h2>Leads por origem</h2>
+
+        <p>
+            De onde estão vindo seus leads.
+        </p>
+
+        <div class="chart-container">
+            <canvas id="sourceChart"></canvas>
+        </div>
+
+    </article>
+
+
+    <!-- LEADS POR VENDEDOR -->
+    {% if show_seller_chart %}
+
+    <article class="dashboard-panel chart-panel seller-chart-panel">
+
+        <h2>Leads por vendedor</h2>
+
+        <p>
+            Distribuição dos leads entre os membros da equipe.
+        </p>
+
+        <div class="chart-container">
+            <canvas id="sellerChart"></canvas>
+        </div>
+
+    </article>
+
+    {% endif %}
+
+</section>
+
+
+<!-- PRÓXIMOS ACOMPANHAMENTOS -->
 <section class="dashboard-panel">
-    <h2>Bem-vindo ao CRM Pro</h2>
-    <p>
-        Seu ambiente de gestão comercial está pronto.
-        Em breve, você poderá acompanhar leads, clientes,
-        oportunidades e resultados em um só lugar.
-    </p>
+
+    <div class="panel-header">
+
+        <div>
+            <h2>Próximos acompanhamentos</h2>
+
+            <p>
+                Seus próximos contatos agendados.
+            </p>
+        </div>
+
+        <a href="{% url 'leads:followups' %}" class="btn-secondary">
+            Ver todos
+        </a>
+
+    </div>
+
+
+    {% if upcoming_followups %}
+
+    <div class="table-responsive">
+
+        <table class="data-table">
+
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Lead</th>
+                    <th>Tipo</th>
+                    <th>Responsável</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+                {% for followup in upcoming_followups %}
+
+                <tr>
+
+                    <td>
+                        {{ followup.next_contact_at|date:"d/m/Y H:i" }}
+                    </td>
+
+
+                    <td>
+                        <strong>
+                            {{ followup.lead.name }}
+                        </strong>
+                    </td>
+
+
+                    <td>
+                        {{ followup.get_activity_type_display }}
+                    </td>
+
+
+                    <td>
+
+                        {% if followup.lead.assigned_to %}
+
+                            {{ followup.lead.assigned_to.get_full_name|default:followup.lead.assigned_to.username }}
+
+                        {% else %}
+
+                            Não atribuído
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+                        <a
+                            href="{% url 'leads:detail' followup.lead.pk %}"
+                            class="table-action"
+                        >
+                            Ver lead
+                        </a>
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <h3>Nenhum acompanhamento próximo</h3>
+
+        <p>
+            Quando você agendar novos contatos,
+            eles aparecerão aqui.
+        </p>
+
+    </div>
+
+    {% endif %}
+
 </section>
+
+
+<!-- DADOS DOS GRÁFICOS -->
+{{ status_labels|json_script:"status-labels-data" }}
+{{ status_values|json_script:"status-values-data" }}
+
+{{ source_labels|json_script:"source-labels-data" }}
+{{ source_values|json_script:"source-values-data" }}
+
+{{ seller_labels|json_script:"seller-labels-data" }}
+{{ seller_values|json_script:"seller-values-data" }}
+
+{% endblock %}
+
+
+<!-- JAVASCRIPT DOS GRÁFICOS -->
+{% block extra_js %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Função para recuperar os dados enviados pelo Django
+    const readData = (id) => {
+        return JSON.parse(
+            document.getElementById(id).textContent
+        );
+    };
+
+
+    // Dados dos gráficos
+    const statusLabels = readData("status-labels-data");
+    const statusValues = readData("status-values-data");
+
+    const sourceLabels = readData("source-labels-data");
+    const sourceValues = readData("source-values-data");
+
+    const sellerLabels = readData("seller-labels-data");
+    const sellerValues = readData("seller-values-data");
+
+
+    // Configurações gerais
+    const commonOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        plugins: {
+            legend: {
+                position: "bottom"
+            }
+        }
+    };
+
+
+    // GRÁFICO 1 - LEADS POR STATUS
+    new Chart(
+        document.getElementById("statusChart"),
+        {
+            type: "doughnut",
+
+            data: {
+                labels: statusLabels,
+
+                datasets: [{
+                    data: statusValues,
+                    borderWidth: 2
+                }]
+            },
+
+            options: commonOptions
+        }
+    );
+
+
+    // GRÁFICO 2 - LEADS POR ORIGEM
+    new Chart(
+        document.getElementById("sourceChart"),
+        {
+            type: "bar",
+
+            data: {
+                labels: sourceLabels,
+
+                datasets: [{
+                    label: "Quantidade de leads",
+                    data: sourceValues,
+                    borderWidth: 1
+                }]
+            },
+
+            options: {
+                ...commonOptions,
+
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        }
+    );
+
+
+    // GRÁFICO 3 - LEADS POR VENDEDOR
+    const sellerCanvas = document.getElementById("sellerChart");
+
+    if (sellerCanvas) {
+
+        new Chart(
+            sellerCanvas,
+            {
+                type: "bar",
+
+                data: {
+                    labels: sellerLabels,
+
+                    datasets: [{
+                        label: "Leads atribuídos",
+                        data: sellerValues,
+                        borderWidth: 1
+                    }]
+                },
+
+                options: {
+                    ...commonOptions,
+
+                    indexAxis: "y",
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+    }
+
+});
+
+</script>
+
 {% endblock %}

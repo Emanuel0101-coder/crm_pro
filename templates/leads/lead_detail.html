@@ -1,0 +1,332 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ lead.name }} | CRM Pro{% endblock %}
+
+{% block breadcrumb %}
+    <a href="{% url 'leads:list' %}">Leads</a> / {{ lead.name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <a href="{% url 'leads:list' %}" class="back-link">
+            ← Voltar para leads
+        </a>
+
+        <h1>{{ lead.name }}</h1>
+        <p>
+            {% if lead.company %}
+                {{ lead.company }}
+            {% else %}
+                Nenhuma empresa informada
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="header-actions">
+        <a href="{% url 'leads:update' lead.pk %}" class="btn btn-primary">
+            Editar lead
+        </a>
+
+        <form
+            method="POST"
+            action="{% url 'leads:delete' lead.pk %}"
+            onsubmit="return confirm('Tem certeza que deseja excluir este lead?');"
+        >
+            {% csrf_token %}
+
+            <button type="submit" class="btn btn-danger">
+                Excluir
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="lead-detail-grid">
+
+    <!-- INFORMAÇÕES DO LEAD -->
+
+    <section class="content-card lead-information">
+
+        <div class="section-header">
+            <h2>Informações do lead</h2>
+
+            <span class="status-badge status-{{ lead.status|lower }}">
+                {{ lead.get_status_display }}
+            </span>
+        </div>
+
+        <div class="detail-fields">
+
+            <div class="detail-field">
+                <span class="detail-label">Nome completo</span>
+                <strong>{{ lead.name }}</strong>
+            </div>
+
+            <div class="detail-field">
+                <span class="detail-label">Empresa</span>
+                <strong>{{ lead.company|default:"Não informado" }}</strong>
+            </div>
+
+            <div class="detail-field">
+                <span class="detail-label">E-mail</span>
+
+                {% if lead.email %}
+                    <a href="mailto:{{ lead.email }}">
+                        {{ lead.email }}
+                    </a>
+                {% else %}
+                    <strong>Não informado</strong>
+                {% endif %}
+            </div>
+
+            <div class="detail-field">
+                <span class="detail-label">Telefone</span>
+
+                {% if lead.phone %}
+                    <a href="tel:{{ lead.phone }}">
+                        {{ lead.phone }}
+                    </a>
+                {% else %}
+                    <strong>Não informado</strong>
+                {% endif %}
+            </div>
+
+            <div class="detail-field">
+                <span class="detail-label">Origem</span>
+                <strong>{{ lead.get_source_display }}</strong>
+            </div>
+
+            <div class="detail-field">
+                <span class="detail-label">Responsável</span>
+
+                <strong>
+                    {% if lead.assigned_to %}
+                        {{ lead.assigned_to.get_full_name|default:lead.assigned_to.username }}
+                    {% else %}
+                        Não atribuído
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="detail-field">
+                <span class="detail-label">Cadastrado por</span>
+
+                <strong>
+                    {% if lead.created_by %}
+                        {{ lead.created_by.get_full_name|default:lead.created_by.username }}
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="detail-field">
+                <span class="detail-label">Data de cadastro</span>
+                <strong>{{ lead.created_at|date:"d/m/Y H:i" }}</strong>
+            </div>
+
+            <div class="detail-field">
+                <span class="detail-label">Última atualização</span>
+                <strong>{{ lead.updated_at|date:"d/m/Y H:i" }}</strong>
+            </div>
+
+        </div>
+
+        <div class="notes-section">
+            <h3>Observações</h3>
+
+            {% if lead.notes %}
+                <p>{{ lead.notes|linebreaksbr }}</p>
+            {% else %}
+                <p class="muted-text">
+                    Nenhuma observação registrada.
+                </p>
+            {% endif %}
+        </div>
+
+    </section>
+
+
+    <!-- REGISTRO DE INTERAÇÕES -->
+
+    <section class="content-card activity-form-card">
+
+        <div class="section-header">
+            <h2>Registrar interação</h2>
+        </div>
+
+        <p class="section-description">
+            Registre contatos e acompanhe o relacionamento com este lead.
+        </p>
+
+        <form
+            method="POST"
+            action="{% url 'leads:activity_create' lead.pk %}"
+        >
+            {% csrf_token %}
+
+            {% if activity_form.non_field_errors %}
+                <div class="form-errors">
+                    {{ activity_form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="{{ activity_form.activity_type.id_for_label }}">
+                    Tipo de interação
+                </label>
+
+                {{ activity_form.activity_type }}
+
+                {% for error in activity_form.activity_type.errors %}
+                    <small class="field-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ activity_form.description.id_for_label }}">
+                    Descrição
+                </label>
+
+                {{ activity_form.description }}
+
+                {% for error in activity_form.description.errors %}
+                    <small class="field-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ activity_form.outcome.id_for_label }}">
+                    Resultado
+                </label>
+
+                {{ activity_form.outcome }}
+
+                {% for error in activity_form.outcome.errors %}
+                    <small class="field-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ activity_form.next_contact_at.id_for_label }}">
+                    Próximo contato
+                </label>
+
+                {{ activity_form.next_contact_at }}
+
+                {% for error in activity_form.next_contact_at.errors %}
+                    <small class="field-error">{{ error }}</small>
+                {% endfor %}
+
+                <small class="field-help">
+                    Informe quando deverá acontecer o próximo acompanhamento.
+                </small>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+                Registrar interação
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
+
+
+<!-- HISTÓRICO DE INTERAÇÕES -->
+
+<section class="content-card activity-history">
+
+    <div class="section-header">
+        <div>
+            <h2>Histórico de interações</h2>
+
+            <p class="section-description">
+                Acompanhe todas as atividades realizadas com este lead.
+            </p>
+        </div>
+
+        <span class="activity-count">
+            {{ activities|length }} interação(ões)
+        </span>
+    </div>
+
+    <div class="activity-timeline">
+
+        {% for activity in activities %}
+
+            <article class="activity-item">
+
+                <div class="activity-marker"></div>
+
+                <div class="activity-content">
+
+                    <div class="activity-top">
+
+                        <div>
+                            <h3>
+                                {{ activity.get_activity_type_display }}
+                            </h3>
+
+                            <span class="activity-date">
+                                {{ activity.created_at|date:"d/m/Y às H:i" }}
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="activity-description">
+                        {{ activity.description|linebreaksbr }}
+                    </div>
+
+                    {% if activity.outcome %}
+                        <div class="activity-outcome">
+                            <strong>Resultado:</strong>
+                            <p>{{ activity.outcome|linebreaksbr }}</p>
+                        </div>
+                    {% endif %}
+
+                    {% if activity.next_contact_at %}
+                        <div class="next-contact">
+                            <strong>Próximo contato:</strong>
+
+                            {{ activity.next_contact_at|date:"d/m/Y às H:i" }}
+                        </div>
+                    {% endif %}
+
+                    <div class="activity-author">
+                        Registrado por:
+
+                        {% if activity.created_by %}
+                            {{ activity.created_by.get_full_name|default:activity.created_by.username }}
+                        {% else %}
+                            Usuário não identificado
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            </article>
+
+        {% empty %}
+
+            <div class="empty-activities">
+                <h3>Nenhuma interação registrada</h3>
+
+                <p>
+                    Quando você registrar uma ligação, mensagem ou reunião,
+                    ela aparecerá aqui.
+                </p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

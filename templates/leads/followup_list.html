@@ -1,0 +1,214 @@
+
+{% extends "base.html" %}
+
+{% block title %}Follow-ups | CRM Pro{% endblock %}
+
+{% block breadcrumb %}
+    Follow-ups
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Follow-ups</h1>
+        <p>Organize seus acompanhamentos e não perca oportunidades.</p>
+    </div>
+</div>
+
+<!-- Indicadores -->
+<div class="metrics-grid">
+
+    <div class="metric-card">
+        <span class="metric-label">Acompanhamentos pendentes</span>
+        <strong>{{ total_pending }}</strong>
+        <small>Total de tarefas em aberto</small>
+    </div>
+
+    <div class="metric-card">
+        <span class="metric-label">Acompanhamentos atrasados</span>
+        <strong>{{ total_overdue }}</strong>
+        <small>Precisam de atenção</small>
+    </div>
+
+    <div class="metric-card">
+        <span class="metric-label">Agendados para hoje</span>
+        <strong>{{ total_today }}</strong>
+        <small>Contatos previstos para hoje</small>
+    </div>
+
+</div>
+
+<!-- Filtros -->
+<div class="content-card">
+
+    <form method="GET" class="filters-form">
+
+        <div class="form-group">
+            <label for="status">Filtrar acompanhamentos</label>
+
+            <select name="status" id="status" class="form-control">
+
+                <option value="all"
+                    {% if status == "all" %}selected{% endif %}>
+                    Todos os pendentes
+                </option>
+
+                <option value="overdue"
+                    {% if status == "overdue" %}selected{% endif %}>
+                    Atrasados
+                </option>
+
+                <option value="today"
+                    {% if status == "today" %}selected{% endif %}>
+                    Para hoje
+                </option>
+
+                <option value="upcoming"
+                    {% if status == "upcoming" %}selected{% endif %}>
+                    Próximos contatos
+                </option>
+
+            </select>
+        </div>
+
+        <div class="filter-actions">
+            <button type="submit" class="btn-filter">
+                Filtrar
+            </button>
+
+            <a href="{% url 'leads:followups' %}" class="btn-clear">
+                Limpar
+            </a>
+        </div>
+
+    </form>
+
+    <!-- Tabela -->
+    <div class="table-responsive">
+
+        <table class="data-table">
+
+            <thead>
+                <tr>
+                    <th>Data do contato</th>
+                    <th>Lead</th>
+                    <th>Tipo</th>
+                    <th>Descrição</th>
+                    <th>Responsável</th>
+                    <th>Situação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for followup in followups %}
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                {{ followup.next_contact_at|date:"d/m/Y" }}
+                            </strong>
+                            <small>
+                                {{ followup.next_contact_at|date:"H:i" }}
+                            </small>
+                        </td>
+
+                        <td>
+                            <a
+                                href="{% url 'leads:detail' followup.lead.pk %}"
+                                class="lead-name"
+                            >
+                                {{ followup.lead.name }}
+                            </a>
+
+                            {% if followup.lead.company %}
+                                <small>{{ followup.lead.company }}</small>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {{ followup.get_activity_type_display }}
+                        </td>
+
+                        <td>
+                            {{ followup.description|truncatechars:65 }}
+                        </td>
+
+                        <td>
+                            {% if followup.lead.assigned_to %}
+                                {{ followup.lead.assigned_to.get_full_name|default:followup.lead.assigned_to.username }}
+                            {% else %}
+                                Não atribuído
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if followup.next_contact_at < now %}
+                                <span class="status-badge status-lost">
+                                    Atrasado
+                                </span>
+                            {% elif followup.next_contact_at.date == today %}
+                                <span class="status-badge status-qualified">
+                                    Hoje
+                                </span>
+                            {% else %}
+                                <span class="status-badge status-new">
+                                    Agendado
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <div class="table-actions">
+
+                                <a
+                                    href="{% url 'leads:detail' followup.lead.pk %}"
+                                    class="action-link"
+                                >
+                                    Ver lead
+                                </a>
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'leads:followup_complete' followup.pk %}"
+                                    onsubmit="return confirm('Deseja marcar este acompanhamento como concluído?');"
+                                >
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="action-link"
+                                    >
+                                        Concluir
+                                    </button>
+                                </form>
+
+                            </div>
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+                        <td colspan="7" class="empty-state">
+                            <strong>Nenhum acompanhamento encontrado.</strong>
+                            <br>
+                            Não existem tarefas pendentes para este filtro.
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,89 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }} | CRM Pro{% endblock %}
+{% block breadcrumb %}Leads / {{ page_title }}{% endblock %}
+
+{% block content %}
+
+<section class="page-heading">
+    <div>
+        <span class="section-label">GESTÃO COMERCIAL</span>
+        <h1>{{ page_title }}</h1>
+        <p>Preencha as informações para manter seu cadastro comercial organizado.</p>
+    </div>
+
+    <a href="{% url 'leads:list' %}" class="btn-secondary">
+        Voltar
+    </a>
+</section>
+
+<section class="form-card">
+
+    <div class="form-card-header">
+        <h2>Informações do lead</h2>
+        <p>Os campos com * são obrigatórios.</p>
+    </div>
+
+    <form method="post"
+        action="{% if lead %}{% url 'leads:update' lead.pk %}{% else %}{% url 'leads:create' %}{% endif %}">
+
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="form-error">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="form-grid">
+
+            {% for field in form %}
+
+                <div class="form-group {% if field.name == 'notes' %}full-width{% endif %}">
+
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+
+                        {% if field.field.required %}
+                            *
+                        {% endif %}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.help_text %}
+                        <small class="field-help">{{ field.help_text }}</small>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="form-actions">
+
+            <a href="{% url 'leads:list' %}" class="btn-secondary">
+                Cancelar
+            </a>
+
+            <button type="submit" class="btn-primary">
+                {% if lead %}
+                    Salvar alterações
+                {% else %}
+                    Cadastrar lead
+                {% endif %}
+            </button>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}

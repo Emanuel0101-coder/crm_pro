@@ -1,4 +1,8 @@
 
+/* =========================================
+   1. CONFIGURAÇÕES GERAIS
+========================================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -9,16 +13,50 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background: #f5f7fb;
     color: #172033;
+    min-height: 100vh;
 }
+
+a {
+    transition: color 0.2s, background 0.2s;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* =========================================
+   2. ESTRUTURA PRINCIPAL
+========================================= */
 
 .app-container {
     display: flex;
     min-height: 100vh;
 }
 
+.main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.page-content {
+    padding: 38px;
+}
+
+/* =========================================
+   3. SIDEBAR
+========================================= */
+
 .sidebar {
     width: 260px;
-    background: #ffffff;
+    min-width: 260px;
+    background: #fff;
     border-right: 1px solid #e7eaf0;
     display: flex;
     flex-direction: column;
@@ -92,6 +130,10 @@ body {
     font-weight: 700;
 }
 
+/* =========================================
+   4. RODAPÉ DA SIDEBAR
+========================================= */
+
 .sidebar-footer {
     margin-top: auto;
     padding-top: 20px;
@@ -104,6 +146,7 @@ body {
 .user-avatar {
     width: 38px;
     height: 38px;
+    min-width: 38px;
     border-radius: 50%;
     background: #e6edff;
     color: #2864ed;
@@ -122,11 +165,16 @@ body {
 
 .user-info strong {
     font-size: 12px;
+    overflow-wrap: anywhere;
 }
 
 .user-info small {
     color: #8993a5;
     font-size: 11px;
+}
+
+.sidebar-footer form {
+    margin: 0;
 }
 
 .logout-button {
@@ -137,13 +185,16 @@ body {
     font-size: 20px;
 }
 
-.main-content {
-    flex: 1;
-    min-width: 0;
+.logout-button:hover {
+    color: #dc2626;
 }
 
+/* =========================================
+   5. TOPBAR
+========================================= */
+
 .topbar {
-    height: 76px;
+    min-height: 76px;
     padding: 0 38px;
     background: #fff;
     border-bottom: 1px solid #e7eaf0;
@@ -152,6 +203,7 @@ body {
     justify-content: space-between;
     color: #7b8495;
     font-size: 13px;
+    gap: 15px;
 }
 
 .topbar-user {
@@ -159,9 +211,9 @@ body {
     font-weight: 600;
 }
 
-.page-content {
-    padding: 38px;
-}
+/* =========================================
+   6. DASHBOARD
+========================================= */
 
 .welcome-section {
     margin-bottom: 30px;
@@ -225,15 +277,906 @@ body {
     line-height: 1.7;
 }
 
+/* =========================================
+   7. CABEÇALHOS DE PÁGINA
+========================================= */
+
+.page-header,
+.page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.page-header h1,
+.page-heading h1 {
+    font-size: 30px;
+    margin: 0 0 6px;
+}
+
+.page-heading h1 {
+    margin-top: 12px;
+}
+
+.page-header p,
+.page-heading p {
+    color: #7b8495;
+    font-size: 14px;
+}
+
+.back-link {
+    display: inline-block;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.back-link:hover {
+    color: #2563eb;
+}
+
+/* =========================================
+   8. BOTÕES
+========================================= */
+
+.btn-primary,
+.btn-secondary,
+.btn-filter,
+.btn-clear,
+.btn-danger {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-primary,
+.btn-filter {
+    background: #2864ed;
+    color: #fff;
+    border: 1px solid #2864ed;
+}
+
+.btn-primary:hover,
+.btn-filter:hover {
+    background: #1e50c5;
+}
+
+.btn-secondary,
+.btn-clear {
+    background: #fff;
+    color: #475467;
+    border: 1px solid #e1e6ef;
+}
+
+.btn-secondary:hover,
+.btn-clear:hover {
+    background: #f5f7fb;
+}
+
+.btn-danger {
+    background: #fff;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.btn-danger:hover {
+    background: #fef2f2;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+/* =========================================
+   9. CARDS E CONTEÚDO
+========================================= */
+
+.content-card,
+.leads-card,
+.form-card,
+.detail-card {
+    background: #fff;
+    border: 1px solid #e9edf3;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+}
+
+.content-card {
+    padding: 24px;
+}
+
+.leads-card,
+.form-card {
+    overflow: hidden;
+}
+
+.table-header,
+.form-card-header {
+    padding: 22px 25px;
+    border-bottom: 1px solid #edf0f5;
+}
+
+.table-header h2,
+.form-card-header h2 {
+    font-size: 17px;
+    margin-bottom: 7px;
+}
+
+.table-header span,
+.form-card-header p {
+    font-size: 12px;
+    color: #98a2b3;
+}
+
+/* =========================================
+   10. FORMULÁRIOS E CAMPOS
+========================================= */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #344054;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    padding: 12px 13px;
+    border: 1px solid #dfe4ec;
+    border-radius: 8px;
+    background: #fff;
+    color: #344054;
+    font-size: 13px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.form-control:focus {
+    border-color: #3478f6;
+    box-shadow: 0 0 0 3px rgba(52, 120, 246, 0.1);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    padding: 25px;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px 25px 0;
+    border-top: 1px solid #edf0f5;
+}
+
+.form-actions button {
+    font-family: inherit;
+}
+
+.field-error,
+.form-error,
+.form-errors,
+.errorlist {
+    color: #d04444;
+    font-size: 12px;
+}
+
+.field-help {
+    color: #98a2b3;
+    font-size: 11px;
+}
+
+.form-error {
+    padding: 15px 25px 0;
+}
+
+/* =========================================
+   11. FILTROS DA LISTAGEM
+========================================= */
+
+.filters-form {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    align-items: end;
+    gap: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.filters-form .form-group {
+    margin: 0;
+}
+
+.filters-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.lead-toolbar {
+    background: #fff;
+    border: 1px solid #e9edf3;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+.filter-form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 230px;
+}
+
+.filter-select {
+    width: 180px;
+}
+
+/* =========================================
+   12. TABELAS
+========================================= */
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-table,
+.leads-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.data-table th,
+.leads-table th {
+    padding: 15px 12px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: #fafbfc;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.data-table td,
+.leads-table td {
+    padding: 16px 12px;
+    font-size: 14px;
+    color: #475467;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.leads-table {
+    white-space: nowrap;
+}
+
+.leads-table th,
+.leads-table td {
+    padding: 15px 20px;
+}
+
+.leads-table th {
+    font-size: 11px;
+    color: #8993a5;
+}
+
+.leads-table td {
+    font-size: 12px;
+}
+
+.data-table tbody tr:hover,
+.leads-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.leads-table td strong {
+    display: block;
+    color: #172033;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.leads-table td small {
+    display: block;
+    color: #98a2b3;
+    margin-top: 5px;
+}
+
+.lead-name,
+.lead-name-link {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.lead-name:hover,
+.lead-name-link:hover {
+    text-decoration: underline;
+}
+
+.table-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+}
+
+.table-actions form {
+    margin: 0;
+}
+
+.action-link,
+.action-edit,
+.action-delete {
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.action-link,
+.action-edit {
+    color: #2864ed;
+}
+
+.action-delete {
+    color: #d04444;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.action-link:hover,
+.action-edit:hover,
+.action-delete:hover {
+    text-decoration: underline;
+}
+
+.empty-state {
+    text-align: center;
+    color: #94a3b8;
+    padding: 35px !important;
+}
+
+/* =========================================
+   13. STATUS DOS LEADS
+========================================= */
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-new {
+    background: #edf3ff;
+    color: #2864ed;
+}
+
+.status-contacted {
+    background: #fff5df;
+    color: #a66b00;
+}
+
+.status-qualified {
+    background: #e8f7ee;
+    color: #21834b;
+}
+
+.status-converted {
+    background: #e5f5f5;
+    color: #087e80;
+}
+
+.status-lost {
+    background: #ffeded;
+    color: #d04444;
+}
+
+/* =========================================
+   14. PAGINAÇÃO
+========================================= */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 24px;
+    font-size: 13px;
+    color: #7b8495;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    border: 1px solid #e1e6ef;
+    border-radius: 7px;
+    color: #2864ed;
+    text-decoration: none;
+}
+
+.pagination a:hover {
+    background: #edf3ff;
+}
+
+.pagination div {
+    display: flex;
+    gap: 8px;
+}
+
+/* =========================================
+   15. DETALHES DO LEAD
+========================================= */
+
+.lead-detail-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.lead-information,
+.activity-form-card,
+.activity-history {
+    padding: 24px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-actions form {
+    margin: 0;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.section-header h2 {
+    font-size: 19px;
+    margin: 0;
+}
+
+.section-description {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.detail-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.detail-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.detail-label,
+.info-label {
+    color: #888;
+    font-size: 13px;
+}
+
+.detail-field strong,
+.detail-field a {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.detail-field a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.detail-field a:hover {
+    text-decoration: underline;
+}
+
+.notes-section,
+.lead-notes {
+    border-top: 1px solid #eee;
+    margin-top: 25px;
+    padding-top: 20px;
+}
+
+.notes-section h3 {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.notes-section p,
+.lead-notes p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #475569;
+}
+
+.muted-text {
+    color: #999;
+}
+
+/* Compatibilidade com estrutura anterior de detalhes */
+
+.lead-detail-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.lead-detail-page .page-header {
+    margin-bottom: 0;
+}
+
+.detail-card {
+    padding: 24px;
+}
+
+.detail-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.detail-card-header h2 {
+    margin: 0;
+    font-size: 19px;
+}
+
+.detail-card-header p {
+    color: #777;
+    margin-top: 5px;
+}
+
+.lead-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.info-item strong {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.lead-status {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #eef2ff;
+    color: #4338ca;
+}
+
+/* =========================================
+   16. FORMULÁRIO DE INTERAÇÃO
+========================================= */
+
+.activity-form-card .form-group {
+    margin-bottom: 17px;
+}
+
+.activity-form-card label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.activity-form-card .form-control {
+    width: 100%;
+}
+
+.activity-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.activity-form .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.activity-form label {
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.activity-form button {
+    align-self: flex-start;
+}
+
+/* =========================================
+   17. HISTÓRICO DE INTERAÇÕES
+========================================= */
+
+.activity-history {
+    margin-bottom: 30px;
+}
+
+.activity-count {
+    color: #777;
+    font-size: 13px;
+}
+
+.activity-timeline {
+    position: relative;
+    padding-left: 28px;
+}
+
+.activity-timeline::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: #e5e7eb;
+}
+
+.activity-item {
+    position: relative;
+    padding-bottom: 28px;
+}
+
+.activity-item:last-child {
+    padding-bottom: 0;
+}
+
+.activity-marker {
+    position: absolute;
+    left: -27px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    background: #2563eb;
+    border: 3px solid #dbeafe;
+    border-radius: 50%;
+}
+
+.activity-content {
+    background: #f9fafb;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.activity-top,
+.activity-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.activity-top h3,
+.activity-heading h3 {
+    font-size: 15px;
+    margin: 0 0 5px;
+    color: #263244;
+}
+
+.activity-date,
+.activity-author {
+    color: #888;
+    font-size: 12px;
+}
+
+.activity-description {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #475569;
+    overflow-wrap: anywhere;
+}
+
+.activity-outcome {
+    background: #fff;
+    border-left: 3px solid #2563eb;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #475569;
+}
+
+.activity-outcome p {
+    margin: 6px 0 0;
+    line-height: 1.7;
+}
+
+.next-contact {
+    margin-top: 14px;
+    color: #2563eb;
+    font-size: 13px;
+}
+
+.activity-author {
+    display: block;
+    margin-top: 15px;
+}
+
+.empty-activities {
+    text-align: center;
+    padding: 35px 15px;
+    color: #888;
+}
+
+.empty-activities h3 {
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.empty-activities p {
+    font-size: 13px;
+}
+
+/* =========================================
+   18. MENSAGENS DO DJANGO
+========================================= */
+
+.messages-container {
+    margin-bottom: 20px;
+}
+
+.message {
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.message-success {
+    background: #e8f7ee;
+    color: #21834b;
+}
+
+.message-error {
+    background: #ffeded;
+    color: #d04444;
+}
+
+.message-warning {
+    background: #fff5df;
+    color: #a66b00;
+}
+
+.message-info {
+    background: #edf3ff;
+    color: #2864ed;
+}
+
+/* =========================================
+   19. RESPONSIVIDADE
+========================================= */
+
 @media (max-width: 1000px) {
     .metrics-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
+@media (max-width: 900px) {
+    .filters-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .filter-actions {
+        grid-column: 1 / -1;
+    }
+
+    .lead-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 850px) {
+    .filter-form {
+        flex-direction: column;
+    }
+
+    .filter-select,
+    .search-input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .lead-detail-page .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .lead-info-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .detail-card {
+        padding: 18px;
+    }
+
+    .detail-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
 @media (max-width: 650px) {
     .sidebar {
         width: 75px;
+        min-width: 75px;
         padding: 20px 10px;
     }
 
@@ -243,9 +1186,7 @@ body {
 
     .brand > span,
     .menu-label,
-    .nav-link:not(.active),
-    .nav-link:not(.active) span,
-    .nav-link.active {
+    .nav-link:not(.active) {
         font-size: 0;
     }
 
@@ -280,5 +1221,155 @@ body {
 
     .metrics-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .page-header,
+    .page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .filters-form {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-actions {
+        grid-column: auto;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        padding: 18px;
+    }
+
+    .full-width {
+        grid-column: auto;
+    }
+
+    .pagination {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .detail-fields,
+    .lead-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .lead-information,
+    .activity-form-card,
+    .activity-history {
+        padding: 16px;
+    }
+
+    .content-card {
+        padding: 14px;
+    }
+}
+
+
+/* =========================================
+   FOLLOW-UPS
+========================================= */
+
+.metrics-grid {
+    margin-bottom: 24px;
+}
+
+.metrics-grid .metric-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.metrics-grid .metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(15, 23, 42, 0.06);
+}
+
+.data-table td small {
+    display: block;
+    margin-top: 5px;
+    color: #98a2b3;
+    font-size: 12px;
+}
+
+.data-table td strong {
+    color: #344054;
+}
+
+.table-actions button.action-link {
+    padding: 0;
+    background: none;
+    border: 0;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.table-actions button.action-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* DASHBOARD - GRÁFICOS */
+
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin: 28px 0;
+}
+
+.chart-panel {
+    min-width: 0;
+}
+
+.chart-panel h2 {
+    margin-bottom: 8px;
+}
+
+.chart-panel p {
+    color: #718096;
+    margin-bottom: 20px;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+}
+
+.seller-chart-panel {
+    grid-column: 1 / -1;
+}
+
+.seller-chart-panel .chart-container {
+    height: 260px;
+}
+
+@media (max-width: 900px) {
+    .dashboard-charts {
+        grid-template-columns: 1fr;
+    }
+
+    .seller-chart-panel {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .chart-container {
+        height: 250px;
     }
 }

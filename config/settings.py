@@ -150,6 +150,7 @@ INSTALLED_APPS = [
     # Aplicativos do CRM
     "accounts",
     "dashboard",
+    "leads",
 ]
 
 
